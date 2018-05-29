@@ -15,7 +15,7 @@ public:
                 "1-wyświetl macierz\n"
                 "2-wyświetl tablicę list\n"
                 "3-wyświetl graf w postaci nieskierowanej(1-dla macierzy,2-dla tablicy list)\n"
-                "4-kruskal(1-dla macierzy,2-dla tablicy list(NIE DZIAŁA W INTERFACE))\n"
+                "4-kruskal(1-dla macierzy,2-dla tablicy list)\n"
                 "5-prim(1-dla macierzy,2-dla tablicy list)\n"
                 "6-dijkstra(1-dla macierzy,2-dla tablicy list no i nr wierzchołka)\n"
                 "7-bellman-ford(1-dla macierzy,2-dla tablicy list no i nr wierzchołka)\n";

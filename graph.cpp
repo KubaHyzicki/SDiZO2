@@ -91,9 +91,43 @@ void graph::fileLoad_toList(){
         listsNoDirect[i]=NULL;
 
     elementList *pointer2=NULL;
+    elementList *pointer3=NULL;
     for(int i=0;i<vertices;i++){
         pointer=lists[i];
         while(pointer){
+
+            //zapobieganie powtarzaniu się krawędzi
+            pointer3=listsNoDirect[i];
+            bool overwrite=0;
+            while(pointer3){
+                if(pointer->direct==pointer3->direct){
+                    overwrite=1;
+                    break;
+                }
+                pointer3=pointer3->next;
+            }
+            if(overwrite==1){
+                if(pointer3->weight>pointer->weight)
+                    pointer3->weight=pointer->weight;
+            }
+            pointer3=listsNoDirect[pointer->direct];
+            bool overwrite2=0;
+            while(pointer3){
+                if(i==pointer3->direct){
+                    overwrite2=1;
+                    break;
+                }
+                pointer3=pointer3->next;
+            }
+            if(overwrite2==1){
+                if(pointer3->weight>pointer->weight)
+                    pointer3->weight=pointer->weight;
+            }
+            if(overwrite==1||overwrite2==1){
+                pointer=pointer->next;
+                continue;
+            }
+
             //tworzenie oryginalnej krawędzi
             pointer2=new elementList;
             pointer2->next=listsNoDirect[i];

@@ -91,7 +91,6 @@ void interface::kruskal(int mode){
         gr->kruskalM();
     if(mode==2)
         gr->kruskalL();
-    cout<<"ciastko"<<endl;
     getchar();
 }
 

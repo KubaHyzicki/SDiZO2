@@ -2,13 +2,12 @@
 #define GRAPH_H
 
 #include <iostream>
-#include <vector>
-#include <queue>
 
 #include "fileread.cpp"
 
 using namespace std;
 
+//pomocnicze struktury potrzebne używane w konkretnych algorytmach
 struct elementList{
     elementList *next=NULL;
     int weight;
@@ -19,6 +18,7 @@ struct elementEdge{
     int weight;
     int start;
     int end;
+    elementEdge *next=nullptr;
 };
 
 struct elementVertice{
@@ -64,21 +64,20 @@ public:
 
     void showFileData();
 
-    void kruskalM();            //kruskal dla tablicy list
+    void kruskalM();            //kruskal dla macierzy
     void kruskalL();            //kruskal dla tablicy list
 
-    void primM();               //prim dla tablicy list
+    void primM();               //prim dla macierzy
     void primL();               //prim dla tablicy list
 
-    void dijkstraM(int w);      //dijkstra dla tablicy list(argumentem jest nr wierzchołka)
+    void dijkstraM(int w);      //dijkstra dla macierzy(argumentem jest nr wierzchołka)
     void dijkstraL(int w);      //dijkstra dla tablicy list(argumentem jest nr wierzchołka)
 
-    void bellman_fordM(int w);  //bellman_ford dla tablicy list(argumentem jest nr wierzchołka)
+    void bellman_fordM(int w);  //bellman_ford dla macierzy(argumentem jest nr wierzchołka)
     void bellman_fordL(int w);  //bellman_ford dla tablicy list(argumentem jest nr wierzchołka)
 
 private:    //wspólne części algorytmów dla obu reprezentacji
     void kruskal(elementEdge **list, int n);
-    void prim(vector<elementEdge*> list,int weightSum);
     void dijkstra(int *dist, int *trace);
     void bellman_ford(int *dist, int *trace);
 

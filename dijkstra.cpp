@@ -3,18 +3,19 @@
 void graph::dijkstraM(int w){
     int dist[vertices];             //tablica odległości między wierzchołkami
     int trace[vertices];            //dodatkowa tabela poprzednio odwiedzonych wierzchołków dla danego(do odtworzenia ścieżki, a nie tylko wag)
-    vector <int> Q;                 //niewykorzystane wierzchołki grafu
+    int *Q=new int[vertices];       //niewykorzystane wierzchołki grafu
+    int qSize=vertices;             //rozmiar Q
     for(int i=0;i<vertices;i++){
         dist[i]=max;                //inicjalizujemy odległości na nieskończoność
         trace[i]=w;                 //inicjalizujemy tablicę śledzącą trasę do wierzchołka wierzchołkiem startowym(zakładam, że do każdego będzie się dało finalnie dostać)
-        Q.push_back(i);             //inicjalizujemy po prostu wszystkie nr wierzchołków
+        Q[i]=i;             //inicjalizujemy po prostu wszystkie nr wierzchołków
     }
     dist[w]=0;                      //wierzchołek startowy ma odległość 0
 
-    while(!Q.empty()){
+    while(qSize){
         //szukanie minimalnej odległości
         int minID=0;             //nr w tabeli wierzchołków z wierzchołkiem o minimalnej odległości od obecnego
-        for(int i=0;i<(int)Q.size();i++)
+        for(int i=0;i<qSize;i++)
             if(dist[Q[i]]<dist[Q[minID]])
                 minID=i;
         //aktualizowanie tabeli odległości(sąsiadów minimalnego wierzchołka)
@@ -28,8 +29,19 @@ void graph::dijkstraM(int w){
                 }
             }
         }
-
-        Q.erase(Q.begin()+minID);   //usuwamy wierzchołek
+        int *temp=new int[qSize-1];
+        int iter=0;
+        while(iter<minID){
+            temp[iter]=Q[iter];
+            iter++;
+        }
+        qSize--;
+        while(iter<qSize){
+            temp[iter]=Q[iter+1];
+            iter++;
+        }
+        delete []Q;
+        Q=temp;
     }
 
     dijkstra(dist,trace);
@@ -38,33 +50,47 @@ void graph::dijkstraM(int w){
 void graph::dijkstraL(int w){
     int dist[vertices];             //tablica odległości między wierzchołkami
     int trace[vertices];            //dodatkowa tabela poprzednio odwiedzonych wierzchołków dla danego(do odtworzenia ścieżki, a nie tylko wag)
-    vector <int> Q;                 //niewykorzystane wierzchołki grafu
+    int *Q=new int[vertices];       //niewykorzystane wierzchołki grafu
+    int qSize=vertices;             //rozmiar Q
     for(int i=0;i<vertices;i++){
         dist[i]=max;                //inicjalizujemy odległości na nieskończoność
         trace[i]=w;                 //inicjalizujemy tablicę śledzącą trasę do wierzchołka wierzchołkiem startowym(zakładam, że do każdego będzie się dało finalnie dostać)
-        Q.push_back(i);             //inicjalizujemy po prostu wszystkie nr wierzchołków
+        Q[i]=i;                     //inicjalizujemy po prostu wszystkie nr wierzchołków
     }
     dist[w]=0;                      //wierzchołek startowy ma odległość 0
 
-    while(!Q.empty()){
+    while(qSize){
         //szukanie minimalnej odległości
         int minID=0;             //nr w tabeli wierzchołków z wierzchołkiem o minimalnej odległości od obecnego
-        for(int i=0;i<(int)Q.size();i++)
+        for(int i=0;i<qSize;i++)
             if(dist[Q[i]]<dist[Q[minID]])
                 minID=i;
         //aktualizowanie tabeli odległości(sąsiadów minimalnego wierzchołka)
         elementList *pointer=lists[Q[minID]];
         while(pointer){     //automatycznie zapewniamy, że znaleziono dojście do nowego wierzchołka
-            if(pointer->direct==Q[minID])   //jeśli to nie jest pętla własna
+            if(pointer->direct==Q[minID]){   //jeśli to nie jest pętla własna
+                pointer=pointer->next;
                 continue;
+            }
             if(dist[pointer->direct]>dist[Q[minID]]+pointer->weight){   //(wikipedia mówi o tym "relaksacja")
                 dist[pointer->direct]=dist[Q[minID]]+pointer->weight;
                 trace[pointer->direct]=Q[minID];
             }
             pointer=pointer->next;
         }
-
-        Q.erase(Q.begin()+minID);   //usuwamy wierzchołek
+        int *temp=new int[qSize-1];
+        int iter=0;
+        while(iter<minID){
+            temp[iter]=Q[iter];
+            iter++;
+        }
+        qSize--;
+        while(iter<qSize){
+            temp[iter]=Q[iter+1];
+            iter++;
+        }
+        delete []Q;
+        Q=temp;
      }
 
     dijkstra(dist,trace);
@@ -72,6 +98,20 @@ void graph::dijkstraL(int w){
 
 void graph::dijkstra(int *dist, int *trace){
     int x=(int)max/2;
+
+    if(vertices>50){                //alternatywny sposób wyświetlania dla większych grafów
+        cout<<endl;
+        for(int i=0;i<vertices;i++){
+            if(dist[i]>x)
+                cout<<i<<"(-)[-] ";
+            else
+                cout<<i<<"("<<dist[i]<<")["<<trace[i]<<"] ";
+        }
+        cout<<endl;
+        return;
+    }
+
+
     cout<<"         ";
     for(int i=0;i<vertices;i++){
         cout<<i<<" ";

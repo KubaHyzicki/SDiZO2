@@ -60,10 +60,6 @@ void graph::kruskal(elementEdge **list, int n){
         }
     }
 
-//    for(int i=0;i<n;i++){
-//        cout<<L[i]->start<<" "<<L[i]->end<<" ("<<L[i]->weight<<")"<<endl;
-//    }
-//    cout<<endl<<endl;
 
     //tabela z przyporządkowaniem wierzchołków do osobnych drzew
     int usedVer[vertices];

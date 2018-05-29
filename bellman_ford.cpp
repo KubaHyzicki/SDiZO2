@@ -64,6 +64,19 @@ void graph::bellman_fordL(int w){
 
 void graph::bellman_ford(int *dist, int *trace){
     int x=(int)max/2;
+
+    if(vertices>50){                //alternatywny sposób wyświetlania dla większych grafów
+        cout<<endl;
+        for(int i=0;i<vertices;i++){
+            if(dist[i]>x)
+                cout<<i<<"(-)[-] ";
+            else
+                cout<<i<<"("<<dist[i]<<")["<<trace[i]<<"] ";
+        }
+        cout<<endl;
+        return;
+    }
+
     cout<<"         ";
     for(int i=0;i<vertices;i++){
         cout<<i<<" ";
